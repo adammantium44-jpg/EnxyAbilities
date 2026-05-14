@@ -17,6 +17,18 @@ jobs:
 
     - uses: lukka/run-vcpkg@v11
 
+    # CACHE
+    - name: Cache vcpkg
+      uses: actions/cache@v4
+      with:
+        path: |
+          build
+          vcpkg_installed
+          C:/vcpkg/packages
+          C:/vcpkg/downloads
+          C:/vcpkg/buildtrees
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
+
     - name: Clean
       shell: cmd
       run: |
