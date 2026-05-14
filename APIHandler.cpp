@@ -143,58 +143,71 @@ namespace Req_PrismaUI_API
 
 	std::string LoadPMCMJsons_CommaJoined()
 	{
-		const fs::path folder = fs::current_path() / "Data" / "PrismaUI" / "PMCM";
-
-		std::vector<std::string> validJsonTexts;
-		validJsonTexts.reserve(32);
-
-		std::error_code ec;
-		if (!fs::exists(folder, ec) || !fs::is_directory(folder, ec)) {
-			return {};
-		}
-
-		for (auto const& entry : fs::directory_iterator(folder, ec)) {
-			if (ec) {
-				break;
-			}
-			if (!entry.is_regular_file(ec)) {
-				continue;
-			}
-
-			const fs::path p = entry.path();
-			if (p.extension() != ".txt") {
-				continue;
-			}
-
-			std::string text = ReadAllText(p);
-			if (text.empty()) {
-				continue;
-			}
-
-			if (text.empty()) {
-				continue;
-			}
-
-			if (IsValidJson(text)) {
-				validJsonTexts.emplace_back(std::move(text));
-			} else {
-				logger::info("Skip invalid json: {}", p.string());
-			}
-		}
-
-		std::string out;
-		for (size_t i = 0; i < validJsonTexts.size(); ++i) {
-			if (i > 0) {
-				out += ",";
-			}
-			out += validJsonTexts[i];
-		}
-
-		if (out.empty()) {
-			return "[]";
-		}
-
-		return "[" + out + "]";
+	    const fs::path folder = "Data/PrismaUI/PMCM";
+	
+	    std::vector<std::string> validJsonTexts;
+	
+	    std::error_code ec;
+	
+	    logger::info("[PMCM] scanning folder: {}", folder.string());
+	
+	    if (!fs::exists(folder, ec)) {
+	        logger::info("[PMCM] folder NOT FOUND");
+	        return "[]";
+	    }
+	
+	    for (auto const& entry : fs::directory_iterator(folder, ec))
+	    {
+	        if (ec) break;
+	        if (!entry.is_regular_file()) continue;
+	
+	        const fs::path p = entry.path();
+	
+	        if (p.extension() != ".txt")
+	            continue;
+	
+	        std::string text = ReadAllText(p);
+	        if (text.empty())
+	            continue;
+	
+	        try
+	        {
+	            if (IsValidJson(text))
+	            {
+	                validJsonTexts.push_back(text);
+	                logger::info("[PMCM] loaded: {}", p.filename().string());
+	            }
+	            else
+	            {
+	                logger::info("[PMCM] invalid json skipped: {}", p.filename().string());
+	            }
+	        }
+	        catch (...)
+	        {
+	            logger::info("[PMCM] exception parsing file: {}", p.filename().string());
+	        }
+	    }
+	
+	    std::string out;
+	
+	    for (size_t i = 0; i < validJsonTexts.size(); ++i)
+	    {
+	        if (i > 0)
+	            out += ",";
+	        out += validJsonTexts[i];
+	    }
+	
+	    if (out.empty())
+	    {
+	        logger::info("[PMCM] no valid entries found");
+	        return "[]";
+	    }
+	
+	    std::string result = "[" + out + "]";
+	
+	    logger::info("[PMCM] FINAL JSON READY");
+	
+	    return result;
 	}
 
 	void passConfig()
