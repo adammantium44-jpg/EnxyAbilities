@@ -17,7 +17,7 @@ jobs:
 
     - uses: lukka/run-vcpkg@v11
 
-    - name: Clean Build
+    - name: Clean
       shell: cmd
       run: |
         if exist build rmdir /s /q build
@@ -29,7 +29,8 @@ jobs:
         -S . ^
         -A x64 ^
         -DCMAKE_BUILD_TYPE=Release ^
-        -DVCPKG_TARGET_TRIPLET=x64-windows-static-md ^
+        -DVCPKG_TARGET_TRIPLET=x64-windows-static ^
+        -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded ^
         -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%\scripts\buildsystems\vcpkg.cmake
 
     - name: Build
