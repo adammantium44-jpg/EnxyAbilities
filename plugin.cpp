@@ -1,12 +1,6 @@
 #include "PCH.h"
 
-SKSEPluginLoad(const SKSE::LoadInterface* skse)
+SKSEPluginLoad(const SKSE::LoadInterface*)
 {
-    SKSE::Init(skse);
-
-    RE::ConsoleLog::GetSingleton()->Print(
-        "EnxyAbilities Loaded!"
-    );
-
     return true;
 }
