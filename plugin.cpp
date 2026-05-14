@@ -6,7 +6,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse)
 
     RE::ConsoleLog::GetSingleton()->Print("EnxyAbilities Loaded!");
 
-    logger::info("EnxyAbilities Loaded!");
+    SKSE::log::info("EnxyAbilities Loaded!");
 
     return true;
 }
