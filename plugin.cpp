@@ -1,21 +1,20 @@
 #include "PCH.h"
 
+SKSEPluginInfo(
+    .Version = "1.0.0",
+    .Name = "EnxyAbilities",
+    .Author = "Enxy",
+    .SupportEmail = "none",
+    .RuntimeCompatibility = SKSE::VersionIndependence::AddressLibrary
+);
+
 SKSEPluginLoad(const SKSE::LoadInterface* skse)
 {
     SKSE::Init(skse);
 
+    RE::ConsoleLog::GetSingleton()->Print(
+        "EnxyAbilities Loaded!"
+    );
+
     return true;
 }
-
-SKSEPluginVersionData SKSEPlugin_Version = [] {
-    SKSEPluginVersionData v{};
-
-    v.PluginVersion(1);
-    v.PluginName("EnxyAbilities");
-    v.AuthorName("Enxy");
-
-    v.UsesAddressLibrary(true);
-    v.HasNoStructUse(true);
-
-    return v;
-}();
