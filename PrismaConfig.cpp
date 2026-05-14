@@ -19,7 +19,7 @@ R"({
     "desc":"Enxy abilities settings",
     "id":"EnxyAbilities",
     "name":"EnxyAbilities",
-    "pid":"EnxyAbilities"
+    "pid":"6401906875496654797"
 })";
 
     file.close();
